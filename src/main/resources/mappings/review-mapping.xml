@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReviewDAO">
+
+	<select id="listReview" parameterType="String" resultType="review">
+		SELECT * 
+		FROM review
+		WHERE id=#{id}
+		ORDER BY rseq DESC <!-- 내림차순으로 해서 최신순으로 보도록함 -->
+	</select>
+	
+	<select id="getReview" resultType="review">
+		SELECT * FROM review 
+		WHERE rseq=#{rseq}
+	</select>
+	
+	<insert id="insertReview">
+		INSERT INTO review(rseq, id, subject, content, image)
+		VALUES (review_seq.nextval, #{id}, #{subject}, #{content}, #{image})
+	</insert>
+	
+	<update id="updateReview">
+		UPDATE review
+		SET subject=#{subject}, content=#{content}, image=#{image}
+		WHERE rseq=#{rseq}
+	</update>
+	
+	<update id="updateCount" parameterType="int">
+		UPDATE review 
+		SET rseq=rseq+1 
+		WHERE rseq=#{rseq}
+	</update>
+	
+	<delete id="deleteReview">
+		DELETE FROM review
+		WHERE rseq=#{rseq}
+	</delete>
+	
+	<insert id="insertComment">
+		INSERT INTO review(id,content)
+		VALUE (#{id}, #{content})
+	</insert>
+
+</mapper>
